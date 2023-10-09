@@ -1,0 +1,318 @@
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
+
+<!-- Main Footer -->
+<footer class="main-footer">
+    <strong>Copyright &copy; 2023</strong>
+</footer>
+</div>
+<!-- ./wrapper -->
+
+<script>
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "2000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    $(function () {
+        $('.select2').select2()
+
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    });
+    $(function () {
+        $("#dataTable").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": true,
+        }).buttons().container().appendTo('#dataTable_wrapper .col-md-6:eq(0)');
+    })
+
+    $('form#adminlogout').submit((e) => {
+        console.log('logout admin')
+        $.ajax({
+            type: "GET",
+            url: '/admin/logout',
+            dataType: 'json',
+            success: function (data) {
+                $('#logoutAdmin').modal('hide');
+                console.log('admin logout')
+                window.location.reload()
+            },
+            error: function (data) {
+                $('#logoutAdmin').modal('hide');
+                window.location.reload()
+            }
+        })
+    })
+
+
+    // APP
+
+    // $('form#AddAppForm').submit(function (e) {
+    //     e.preventDefault()
+    //     var form = this;
+    //     var formData = new FormData(form)
+    //     var pass = {}
+
+    //     for (const [key, value] of formData) {
+    //         pass[key] = value
+    //         console.log(pass[key])
+    //     }
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/admin/apps',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(pass),
+
+    //         success: function (data) {
+    //             $('#AddAppModal').modal('hide');
+    //             toastr.success('app created')
+    //             setTimeout(() => {
+    //                 window.location.reload()
+    //             }, 1000)
+    //         },
+    //         error: function (error) {
+    //             console.log('error creating app : ', error);
+    //             form.reset()
+    //             $('#AddAppModal').modal('hide');
+    //             toastr.error('something is wrong')
+    //         }
+    //     })
+    // })
+
+    // $('form#updateAppForm').submit(function (e) {
+    //     e.preventDefault()
+
+    //     var form = this;
+    //     var formData = new FormData(form)
+    //     var pass = {}
+
+    //     for (const [key, value] of formData) {
+    //         pass[key] = value
+    //         console.log(pass[key])
+    //     }
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/admin/apps/update',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(pass),
+
+    //         success: function (data) {
+    //             $('#updateAppModal').modal('hide');
+    //             toastr.success('app updated')
+    //             setTimeout(() => {
+    //                 window.location.reload()
+    //             }, 0o0)
+    //         },
+    //         error: function (error) {
+    //             console.log('error updating app : ', error);
+    //             form.reset()
+    //             $('#updateAppModal').modal('hide');
+    //             toastr.error('something is wrong')
+    //         }
+    //     })
+    // })
+
+
+    // ADS_TYPES
+
+    // $('form#AddAdsTypeForm').submit(function (e) {
+    //     e.preventDefault()
+    //     var form = this;
+    //     var formData = new FormData(form)
+    //     var pass = {}
+
+    //     for (const [key, value] of formData) {
+    //         pass[key] = value
+    //         console.log(pass[key])
+    //     }
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/admin/ads-types',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(pass),
+
+    //         success: function (data) {
+    //             $('#AddAdsTypeModal').modal('hide');
+    //             toastr.success('ads type created')
+    //             setTimeout(() => {
+    //                 window.location.reload()
+    //             }, 1000)
+    //         },
+    //         error: function (error) {
+    //             console.log('error creating ads type : ', error);
+    //             form.reset()
+    //             $('#AddAdsTypeModal').modal('hide');
+    //             toastr.error('something is wrong')
+    //         }
+    //     })
+    // })
+
+    // $('form#updateAdsTypeForm').submit(function (e) {
+    //     e.preventDefault()
+    //     var form = this;
+    //     var formData = new FormData(form)
+    //     var pass = {}
+
+    //     for (const [key, value] of formData) {
+    //         pass[key] = value
+    //         console.log(pass[key])
+    //     }
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/admin/ads-types/update',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(pass),
+
+    //         success: function (data) {
+    //             $('#updateAdsTypeModal').modal('hide');
+    //             toastr.success('ads type updated')
+    //             setTimeout(() => {
+    //                 window.location.reload()
+    //             }, 1000)
+    //         },
+    //         error: function (error) {
+    //             console.log('error updating ads type : ', error);
+    //             form.reset()
+    //             $('#updateAdsTypeModal').modal('hide');
+    //             toastr.error('something is wrong')
+    //         }
+    //     })
+    // })
+
+
+    // COUNTRY
+
+    // $('form#AddCountryForm').submit(function (e) {
+    //     e.preventDefault()
+    //     var form = this;
+    //     var formData = new FormData(form)
+    //     var pass = {}
+
+    //     for (const [key, value] of formData) {
+    //         pass[key] = value
+    //         console.log(pass[key])
+    //     }
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/admin/countries',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(pass),
+
+    //         success: function (data) {
+    //             $('#AddCountryModal').modal('hide');
+    //             toastr.success('country created')
+    //             // setTimeout(() => {
+    //             //     window.location.reload()
+    //             // }, 1000)
+    //         },
+    //         error: function (error) {
+    //             console.log('error creating country : ', error);
+    //             form.reset()
+    //             $('#AddCountryModal').modal('hide');
+    //             toastr.error('something is wrong')
+    //         }
+    //     })
+    // })
+
+    // $('form#updateCountryForm').submit(function (e) {
+    //     e.preventDefault()
+    //     var form = this;
+    //     var formData = new FormData(form)
+    //     var pass = {}
+
+    //     for (const [key, value] of formData) {
+    //         pass[key] = value
+    //         console.log(pass[key])
+    //     }
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/admin/countries/update',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(pass),
+
+    //         success: function (data) {
+    //             $('#updateCountryModal').modal('hide');
+    //             toastr.success('country updated')
+    //             // setTimeout(() => {
+    //             //     window.location.reload()
+    //             // }, 1000)
+    //         },
+    //         error: function (error) {
+    //             console.log('error updating country : ', error);
+    //             form.reset()
+    //             $('#updateCountryModal').modal('hide');
+    //             toastr.error('something is wrong')
+    //         }
+    //     })
+    // })
+
+    // ADS TYPES COUNTRY
+
+    // $('#updateCountryInAds').click(function (e) {
+    //     e.preventDefault();
+
+    //     var data = $('#adsTypeCountryForm').serializeArray().reduce((o, {
+    //         name: n,
+    //         value: v
+    //     }) => Object.assign(o, {
+    //         [n]: v
+    //     }), {});
+    //     console.log("data....", data)
+
+    //     var formData = new FormData($('#adsTypeCountryForm').form);
+
+    //     for (const [key, value] of Object.entries(data)) {
+    //         formData.append(key, value)
+    //     }
+    //     const countries = $('#country_id').val();
+    //     formData.append('country_id : ', countries.join(','))
+
+    //     console.log('formData : ', formData);
+
+    //     fetch('/admin/ads-types/countries', {
+    //         method: "POST",
+    //         body: formData,
+    //         mode: 'cors',
+    //         cache: 'no-cache',
+    //     }).then(async function (res) {
+    //         const data = await res.json()
+    //         if (data.success) {
+    //             toastr.success('country added and deleted in ads type')
+    //             setTimeout(() => {
+    //                 window.location.reload()
+    //             }, 1000)
+    //         }
+    //         else {
+    //             toastr.error('something is wrong')
+    //         }
+    //     }).catch(function (error) {
+    //         console.log('error adding and deleting country in ads type : ', error);
+    //         toastr.error('something is wrong')
+    //     })
+    // })
+
+
+
+</script>
+
+</body>
+
+</html>

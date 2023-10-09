@@ -1,0 +1,273 @@
+<%- include('../layouts/header.ejs') %>
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Countries</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
+                                data-target="#AddCountryModal">
+                                <i class="fas fa-plus">&nbsp;</i>
+                                Add Country
+                            </button>
+                        </ol>
+                    </div>
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header" style="text-transform: capitalize;">
+                            Countries
+                        </div>
+                        <div class="card-body">
+                            <table id="dataTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Country Name</th>
+                                        <th>Country Code</th>
+                                        <th>Calling Code</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% countries.forEach((country, index)=> { %>
+                                        <tr>
+                                            <td class="dtr-control sorting_1" tabindex="0">
+                                                <%= index + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= country.country_name %>
+                                            </td>
+                                            <td>
+                                                <%= country.country_code %>
+                                            </td>
+                                            <td>
+                                                <%= country.calling_code %>
+                                            </td>
+                                            <td>
+                                                <div class="timeline-footer">
+                                                    <button class="btn btn-primary btn-sm"
+                                                        onclick="editCountryModal('<%= JSON.stringify(country) %>')"
+                                                        data-toggle="modal" data-target="#updateCountryModal">
+                                                        <i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-danger btn-sm"
+                                                        onclick="deleteCountryModal('<%= country.id %>')"
+                                                        data-toggle="modal" data-target="#deleteCountryModal">
+                                                        <i class="fas fa-trash"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="AddCountryModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Country</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form id="AddCountryForm" action="#">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Country Name</label>
+                                <input type="text" class="form-control" id="country_name" name="country_name"
+                                    placeholder="enter country name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Country Code</label>
+                                <input type="text" class="form-control" id="country_code" name="country_code"
+                                    placeholder="enter country code" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Calling Code</label>
+                                <input type="text" class="form-control" id="calling_code" name="calling_code"
+                                    placeholder="enter calling code" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="addCountryBtn">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="updateCountryModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update Country</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form id="updateCountryForm" action="#">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Country Name</label>
+                                <input type="text" class="form-control" id="up-country_name" name="country_name">
+                            </div>
+                            <div class="form-group">
+                                <label>Country Code</label>
+                                <input type="text" class="form-control" id="up-country_code" name="country_code">
+                            </div>
+                            <div class="form-group">
+                                <label>Calling Code</label>
+                                <input type="text" class="form-control" id="up-calling_code" name="calling_code">
+                            </div>
+                            <input type="hidden" name="id" id="country-id">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="updateCountryBtn">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade " id="deleteCountryModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="deleteCountryForm" action="#">
+                    <div class="modal-body">
+                        <input type="hidden" id="countries_id" value="<%= countries.id %>" name="id">
+                        <h3 style="text-align: center;"> Are you sure want to delete this country?</h3>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#addCountryBtn').click(function (e) {
+            e.preventDefault();
+            const country_name = $('#country_name').val()
+            const country_code = $('#country_code').val()
+            const calling_code = $('#calling_code').val()
+            const pass = { country_name, country_code, calling_code }
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/countries',
+                contentType: 'application/json',
+                data: JSON.stringify(pass),
+
+                success: function (data) {
+                    $('#AddCountryModal').modal('hide');
+                    toastr.success('country created')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
+                },
+                error: function (error) {
+                    console.log('error creating country : ', error);
+                    form.reset()
+                    $('#AddCountryModal').modal('hide');
+                    toastr.error('something is wrong')
+                }
+            })
+        })
+
+        $('#updateCountryBtn').click(function (e) {
+            e.preventDefault()
+            const countryId = $('#country-id').val()
+            const country_name = $('#up-country_name').val()
+            const country_code = $('#up-country_code').val()
+            const calling_code = $('#up-calling_code').val()
+            const pass = { country_name, country_code, calling_code }
+
+            $.ajax({
+                type: 'PUT',
+                url: `/admin/countries/${countryId}`,
+                contentType: 'application/json',
+                data: JSON.stringify(pass),
+
+                success: function (data) {
+                    $('#updateCountryModal').modal('hide');
+                    toastr.success('country updated')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
+                },
+                error: function (error) {
+                    console.log('error updating country : ', error);
+                    form.reset()
+                    $('#updateCountryModal').modal('hide');
+                    toastr.error('something is wrong')
+                }
+            })
+        })
+
+        function editCountryModal(countryData) {
+            var country = JSON.parse(countryData);
+
+            document.getElementById('country-id').value = country.id;
+            document.getElementById('up-country_name').value = country.country_name;
+            document.getElementById('up-country_code').value = country.country_code;
+            document.getElementById('up-calling_code').value = country.calling_code;
+        }
+
+        function deleteCountryModal(countryId) {
+            document.getElementById('countries_id').value = countryId
+            $('#deleteCountryModal').modal('show')
+
+            $('form#deleteCountryForm').submit(function (e) {
+                e.preventDefault()
+                var form = this;
+                var formData = new FormData(form)
+                $.ajax({
+                    url: `/admin/countries/${countryId}`,
+                    type: 'DELETE',
+                    data: null,
+                    processData: false,
+                    success: function (data) {
+                        form.reset()
+                        toastr.success('country deleted')
+                        $('#deleteCountryModal').modal('hide');
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1000)
+                    },
+                    error: function (err) {
+                        console.log('error in deleting country : ', err)
+                        form.reset()
+                        $('#deleteCountryModal').modal('hide');
+                        toastr.error('something is wrong');
+                    }
+                })
+
+            })
+        }
+
+    </script>
+
+    <%- include('../layouts/footer.ejs') %>

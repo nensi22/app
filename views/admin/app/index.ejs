@@ -1,0 +1,295 @@
+<%- include('../layouts/header.ejs') %>
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Apps</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
+                                data-target="#AddAppModal">
+                                <i class="fas fa-plus">&nbsp;</i>
+                                Add App
+                            </button>
+                        </ol>
+                    </div>
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header" style="text-transform: capitalize;">
+                            Apps
+                        </div>
+                        <div class="card-body">
+                            <table id="dataTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Ads</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% apps.forEach((app, index)=> { %>
+                                        <tr>
+                                            <td class="dtr-control sorting_1" tabindex="0">
+                                                <%= index + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= app.name %>
+                                            </td>
+                                            <td>
+                                                <label class="switch"> </label>
+                                                <label class="toggle">
+                                                    <input class="toggle-checkbox custom-checkbox" type="checkbox"
+                                                        onchange="updateAds('<%= app.id %>')" name="is_ads" id="isAds"
+                                                        <%=app.is_ads ? 'checked' : 'unchecked' %>>
+                                                    <div class="toggle-switch"></div>
+                                                    <span class="toggle-label"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div class="timeline-footer">
+                                                    <button class="btn btn-primary btn-sm"
+                                                        onclick="handleEditModal('<%= JSON.stringify(app) %>')"
+                                                        data-toggle="modal" data-target="#updateAppModal">
+                                                        <i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-danger btn-sm"
+                                                        onclick="handleDeleteModal('<%= app.id %>')" data-toggle="modal"
+                                                        data-target="#deleteAppModal">
+                                                        <i class="fas fa-trash"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="AddAppModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add App</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form id="AddAppForm" action="#">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="enter name"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch  custom-switch-on-success">
+                                    <input type="checkbox" class="custom-control-input" name="is_ads" id="is_ads">
+                                    <label class="custom-control-label" for="is_ads">Ads</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="addAppBtn">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="updateAppModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update App</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form id="updateAppForm" action="#">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" id="up-name" name="name"
+                                    placeholder="enter name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="switch">Ads </label>
+                                <label class="toggle">
+                                    <input class="toggle-checkbox custom-checkbox" type="checkbox" name="is_ads"
+                                        id="up-is_ads">
+                                    <div class="toggle-switch"></div>
+                                    <span class="toggle-label"></span>
+                                </label>
+                            </div>
+                            <input type="hidden" name="id" id="app-id">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="updateAppBtn">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade " id="deleteAppModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="deleteAppForm" action="#">
+                        <div class="modal-body">
+                            <input type="hidden" id="app_id" value="<%= apps.id %>" name="id">
+                            <h3 style="text-align: center;">Are you sure want to delete this app ?</h3>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-primary">Yes</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+    </div>
+
+    <script>
+        $('#addAppBtn').click(function (e) {
+            e.preventDefault();
+            const name = $('#name').val()
+            const is_ads = $('#is_ads').val()
+            const pass = { name, is_ads }
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/apps',
+                contentType: 'application/json',
+                data: JSON.stringify(pass),
+
+                success: function (data) {
+                    $('#AddAppModal').modal('hide');
+                    toastr.success('app created')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
+                },
+                error: function (error) {
+                    console.log('error creating app : ', error);
+                    form.reset()
+                    $('#AddAppModal').modal('hide');
+                    toastr.error('something is wrong')
+                }
+            })
+        })
+
+        $('#updateAppBtn').click(function (e) {
+            e.preventDefault();
+            const appId = $('#app-id').val()
+            const name = $('#up-name').val()
+            const is_ads = $('#up-is_ads').val()
+            const pass = { name, is_ads }
+
+            $.ajax({
+                type: 'PUT',
+                url: `/admin/apps/${appId}`,
+                contentType: 'application/json',
+                data: JSON.stringify(pass),
+
+                success: function (data) {
+                    $('#updateAppModal').modal('hide');
+                    toastr.success('app updated')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 0o0)
+                },
+                error: function (error) {
+                    console.log('error updating app : ', error);
+                    form.reset()
+                    $('#updateAppModal').modal('hide');
+                    toastr.error('something is wrong')
+                }
+            })
+        })
+
+        function updateAds(appId) {
+            console.log('app id : ', appId)
+            const is_ads = document.getElementById('isAds').value
+            $.ajax({
+                type: 'PATCH',
+                url: `/admin/apps/is-ads/${appId}`,
+                contentType: 'application/json',
+                data: JSON.stringify({ is_ads }),
+                success: function (data) {
+                    toastr.success('ads updated')
+                    console.log(' updating ads : ', data)
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
+                },
+                error: function (err) {
+                    console.log('error in updating ads : ', err)
+                    toastr.error('something is wrong');
+                }
+            })
+        }
+
+        function handleEditModal(appData) {
+            var app = JSON.parse(appData);
+
+            document.getElementById('app-id').value = app.id;
+            document.getElementById('up-name').value = app.name;
+            document.getElementById('up-is_ads').checked = app.is_ads;
+        }
+
+        function handleDeleteModal(appId) {
+            document.getElementById('app_id').value = appId
+            $('#deleteAppModal').modal('show')
+
+            $('form#deleteAppForm').submit(function (e) {
+                e.preventDefault()
+                var form = this;
+                var formData = new FormData(form)
+                $.ajax({
+                    url: `/admin/apps/${appId}`,
+                    type: 'DELETE',
+                    data: null,
+                    processData: false,
+                    success: function (data) {
+                        form.reset()
+                        toastr.success('app deleted')
+                        $('#deleteAppModal').modal('hide');
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1000)
+                    },
+                    error: function (err) {
+                        console.log('error in deleting app : ', err)
+                        form.reset()
+                        $('#deleteAppModal').modal('hide');
+                        toastr.error('something is wrong');
+                    }
+                })
+
+            })
+        }
+
+    </script>
+
+    <%- include('../layouts/footer.ejs') %>

@@ -1,0 +1,20 @@
+Apps: id,name, ads
+
+ads_type
+id, app_id, platform_name,priority, ads_placement_type
+
+ country
+id, country_code, calling_code, country_name
+
+ads_type_countries
+id, ads_type_id, country_id
+
+<% countries.forEach((country)=> { %>
+                                                    <option value="<%= country.id %>" <%=isSelectedCountry(country.id)
+                                                        ? 'selected' : '' %> >
+                                                        <%= country.country_name %>
+                                                    </option>
+                                                    <% }) %>
+
+/get-apps?page=1&limit=10 :  (skip,offset)
+/get-apps/1 :             

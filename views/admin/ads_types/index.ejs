@@ -1,0 +1,323 @@
+<%- include('../layouts/header.ejs') %>
+
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Ads Types</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
+                                data-target="#AddAdsTypeModal">
+                                <i class="fas fa-plus">&nbsp;</i>
+                                Add Ads Type
+                            </button>
+                        </ol>
+                    </div>
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header" style="text-transform: capitalize;">
+                            Ads Types
+                        </div>
+                        <div class="card-body">
+                            <table id="dataTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>App Name</th>
+                                        <th>Platform Name</th>
+                                        <th>Priority</th>
+                                        <th>Placement Type</th>
+                                        <th>View Country</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% adsTypes.forEach((ads, index)=> { %>
+                                        <tr>
+                                            <td class="dtr-control sorting_1" tabindex="0">
+                                                <%= index + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= ads.app.name %>
+                                            </td>
+                                            <td>
+                                                <%= ads.platform_name %>
+                                            </td>
+                                            <td>
+                                                <%= ads.priority %>
+                                            </td>
+                                            <td>
+                                                <%= ads.ads_placement_type %>
+                                            </td>
+                                            <td>
+                                                <a href="/admin/ads-types/countries/<%= ads.id %>"
+                                                    class="nav-link <%= page === 'ads-types' ? 'active' : '' %>">view
+                                                    countries</a>
+                                            </td>
+                                            <td>
+                                                <div class="timeline-footer">
+                                                    <button class="btn btn-primary btn-sm"
+                                                        onclick="editAdsTypeModal('<%= JSON.stringify(ads) %>')"
+                                                        data-toggle="modal" data-target="#updateAdsTypeModal">
+                                                        <i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-danger btn-sm"
+                                                        onclick="deleteAdsTypeModal('<%= ads.id %>')"
+                                                        data-toggle="modal" data-target="#deleteAdsTypeModal">
+                                                        <i class="fas fa-trash"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="AddAdsTypeModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Ads Types </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form id="AddAdsTypeForm" action="#">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>App Name</label>
+                                <select class="select" style="width: 100%;" id="app_id" name="app_id"
+                                    data-placeholder="select app">
+                                    <% apps.forEach((app)=> { %>
+                                        <option value="<%= app.id %>">
+                                            <%= app.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Platform Name</label>
+                                <select class="select" style="width: 100%;" name="platform_name" id="platform_name"
+                                    data-placeholder="select platform">
+                                    <option value="google">Google</option>
+                                    <option value="facebook">Facebook</option>
+                                    <option value="applovin">Applovin</option>
+                                    <option value="qureka">Qureka</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <input type="text" class="form-control" id="priority" name="priority"
+                                    placeholder="enter priority" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Ads Placement Type</label>
+                                <input type="text" class="form-control" id="ads_placement_type"
+                                    name="ads_placement_type" placeholder="enter ads placement type" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="addAdsTypeBtn">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="updateAdsTypeModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update Ads Types</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form id="updateAdsTypeForm" action="#">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>App Name</label>
+                                <select class="select" style="width: 100%;" id="up-app_id" name="app_id">
+                                    <% apps.forEach((app)=> { %>
+                                        <option value="<%= app.id %>">
+                                            <%= app.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Platform Name</label>
+                                <select class="select" style="width: 100%;" id="up-platform_name" name="platform_name">
+                                    <option value="google">Google</option>
+                                    <option value="facebook">Facebook</option>
+                                    <option value="applovin">Applovin</option>
+                                    <option value="qureka">Qureka</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <input type="text" class="form-control" id="up-priority" name="priority"
+                                    placeholder="enter priority" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Ads Placement Type</label>
+                                <input type="text" class="form-control" id="up-ads_placement_type"
+                                    name="ads_placement_type" placeholder="enter ads placement type" required>
+                            </div>
+                            <input type="hidden" name="id" id="adsType-id">
+                        </div>
+                        <div class="modal-footer ">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="updateAdsTypeBtn">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade " id="deleteAdsTypeModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="deleteAdsTypeForm" action="#">
+                        <div class="modal-body">
+                            <input type="hidden" id="adsTypesId" value="<%= adsTypes.id %>" name="id">
+                            <h3 style="text-align: center;">Are you sure want to delete this ads type ?</h3>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-primary">Yes</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+    </div>
+
+
+    <script>
+        $('#addAdsTypeBtn').click(function (e) {
+            e.preventDefault()
+            const app_id = $('#app_id').val()
+            const platform_name = $('#platform_name').val()
+            const priority = $('#priority').val()
+            const ads_placement_type = $('#ads_placement_type').val()
+            const pass = { app_id, platform_name, priority, ads_placement_type }
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/ads-types',
+                contentType: 'application/json',
+                data: JSON.stringify(pass),
+
+                success: function (data) {
+                    $('#AddAdsTypeModal').modal('hide');
+                    toastr.success('ads type created')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
+                },
+                error: function (error) {
+                    console.log('error creating ads type : ', error);
+                    form.reset()
+                    $('#AddAdsTypeModal').modal('hide');
+                    toastr.error('something is wrong')
+                }
+            })
+        })
+
+        $('#updateAdsTypeBtn').click(function (e) {
+            e.preventDefault()
+            const adsTypeId = $('#adsType-id').val()
+            const app_id = $('#up-app_id').val()
+            const platform_name = $('#up-platform_name').val()
+            const priority = $('#up-priority').val()
+            const ads_placement_type = $('#up-ads_placement_type').val()
+            const pass = { app_id, platform_name, priority, ads_placement_type }
+
+            $.ajax({
+                type: 'PUT',
+                url: `/admin/ads-types/${adsTypeId}`,
+                contentType: 'application/json',
+                data: JSON.stringify(pass),
+
+                success: function (data) {
+                    $('#updateAdsTypeModal').modal('hide');
+                    toastr.success('ads type updated')
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
+                },
+                error: function (error) {
+                    console.log('error updating ads type : ', error);
+                    form.reset()
+                    $('#updateAdsTypeModal').modal('hide');
+                    toastr.error('something is wrong')
+                }
+            })
+        })
+
+
+
+        function editAdsTypeModal(adsTypeData) {
+            var adsType = JSON.parse(adsTypeData);
+
+            document.getElementById('adsType-id').value = adsType.id;
+            document.getElementById('up-app_id').value = adsType.app_id;
+            document.getElementById('up-platform_name').value = adsType.platform_name;
+            document.getElementById('up-priority').value = adsType.priority;
+            document.getElementById('up-ads_placement_type').value = adsType.ads_placement_type;
+        }
+
+        function deleteAdsTypeModal(adsTypeId) {
+            document.getElementById('adsTypesId').value = adsTypeId
+            $('#deleteAdsTypeModal').modal('show')
+
+            $('form#deleteAdsTypeForm').submit(function (e) {
+                e.preventDefault()
+                var form = this;
+                var formData = new FormData(form)
+                $.ajax({
+                    url: `/admin/ads-types/${adsTypeId}`,
+                    type: 'DELETE',
+                    data: null,
+                    processData: false,
+                    success: function (data) {
+                        form.reset()
+                        toastr.success('ads type deleted')
+                        $('#deleteAdsTypeModal').modal('hide');
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1000)
+                    },
+                    error: function (err) {
+                        console.log('error in deleting ads type : ', err)
+                        form.reset()
+                        $('#deleteAdsTypeModal').modal('hide');
+                        toastr.error('something is wrong');
+                    }
+                })
+
+            })
+        }
+
+    </script>
+
+    <%- include('../layouts/footer.ejs') %>
